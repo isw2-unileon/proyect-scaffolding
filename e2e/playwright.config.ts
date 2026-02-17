@@ -14,6 +14,21 @@ export default defineConfig({
     video: "retain-on-failure",
   },
 
+  webServer: [
+    {
+      command: "go run ./backend/cmd/server",
+      cwd: "..",
+      port: 8080,
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: "cd frontend && npm run dev",
+      cwd: "..",
+      port: 5173,
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
+
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "firefox", use: { ...devices["Desktop Firefox"] } },
