@@ -14,7 +14,11 @@ import (
 	"github.com/isw2-unileon/proyect-scaffolding/backend/internal/config"
 )
 
+var logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
+
 func main() {
+	ctx := context.Background()
+
 	cfg := config.Load()
 
 	gin.SetMode(cfg.GinMode)
@@ -40,13 +44,13 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
 	go func() {
 		slog.Info("server listening", "addr", srv.Addr)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			slog.Error("server error", "error", err)
+			logger.Error("server error", "error", err)
 			os.Exit(1)
 		}
 	}()
@@ -58,8 +62,8 @@ func main() {
 	defer cancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
-		slog.Error("shutdown error", "error", err)
+		logger.Error("shutdown error", "error", err)
 	}
 
-	slog.Info("server stopped")
+	logger.Info("server stopped")
 }
