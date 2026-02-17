@@ -34,61 +34,59 @@ linters:
     - nolintlint
     - misspell
 
-linters-settings:
-  gocyclo:
-    min-complexity: 15
+  settings:
+    gocyclo:
+      min-complexity: 15
 
-  gocognit:
-    min-complexity: 20
+    gocognit:
+      min-complexity: 20
 
-  funlen:
-    lines: -1
-    statements: 50
+    funlen:
+      lines: -1
+      statements: 50
 
-  dupl:
-    threshold: 100
+    dupl:
+      threshold: 100
 
-  gocritic:
-    enabled-checks:
-      - appendAssign
-      - badCond
-      - boolExprSimplify
-      - builtinShadow
-      - commentedOutCode
-      - deferInLoop
-      - dupArg
-      - dupBranchBody
-      - dupSubExpr
-      - exitAfterDefer
-      - nilValReturn
-      - regexpSimplify
-      - unnecessaryBlock
-      - unnecessaryDefer
-      - weakCond
+    gocritic:
+      enabled-checks:
+        - boolExprSimplify
+        - builtinShadow
+        - commentedOutCode
+        - deferInLoop
+        - nilValReturn
+        - regexpSimplify
+        - unnecessaryBlock
+        - unnecessaryDefer
+        - weakCond
 
-  revive:
+    revive:
+      rules:
+        - name: blank-imports
+        - name: context-as-argument
+        - name: error-naming
+        - name: error-return
+        - name: error-strings
+        - name: errorf
+        - name: exported
+        - name: indent-error-flow
+        - name: receiver-naming
+        - name: time-naming
+        - name: unexported-naming
+        - name: var-declaration
+        - name: var-naming
+
+  exclusions:
+    presets:
+      - std-error-handling
+      - common-false-positives
     rules:
-      - name: blank-imports
-      - name: context-as-argument
-      - name: error-naming
-      - name: error-return
-      - name: error-strings
-      - name: errorf
-      - name: exported
-      - name: indent-error-flow
-      - name: receiver-naming
-      - name: time-naming
-      - name: unexported-naming
-      - name: var-declaration
-      - name: var-naming
+      - path: "_test\\.go$"
+        linters:
+          - dupl
+          - funlen
+          - gosec
 
 issues:
   max-same-issues: 0
   max-issues-per-linter: 0
-
-  exclude-rules:
-    - path: "_test\\.go$"
-      linters:
-        - dupl
-        - funlen
-        - gosec

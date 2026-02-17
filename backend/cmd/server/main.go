@@ -31,11 +31,9 @@ func main() {
 	})
 
 	api := r.Group("/api")
-	{
-		api.GET("/hello", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"message": "Hello from the API"})
-		})
-	}
+	api.GET("/hello", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Hello from the API"})
+	})
 
 	srv := &http.Server{
 		Addr:         ":" + cfg.Port,
